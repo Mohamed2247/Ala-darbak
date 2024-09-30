@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="./assets/css/register.css" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="ar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html" id="brandName">
+          <span id="brandText">النقل بإستخدام</span>
+          <img
+            src="./assets/images/logo.jpg"
+            alt="logo"
+            style="height: 30px; width: 30px"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="about">معلومات عننا</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="jobs">الوظائف</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="langToggle">
+                <span>AR-EN</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="help">المساعدة</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.html" id="register"
+                >تسجيل الدخول</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-dark border border-danger rounded-pill"
+                href="#"
+                id="login"
+                >التسجيل</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="form-container">
+        <img src="./assets/images/logo.jpg" alt="Logo" />
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="fullName" id="fullNameLabel">إسم المستخدم</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fullName"
+              placeholder="إسم المستخدم"
+              autocomplete="additional-name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password" id="passwordLabel">الأسم كامل</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="كلمة السر"
+              autocomplete="additional-name"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-danger btn-block"
+            id="submitButton"
+          >
+            تسجيل الدخول
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" async>
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAy8nUYvMqn4acRcR7hhT9tV3tPam0kXW8",
+        authDomain: "ala-darbak-40748.firebaseapp.com",
+        projectId: "ala-darbak-40748",
+        storageBucket: "ala-darbak-40748.appspot.com",
+        messagingSenderId: "213366845955",
+        appId: "1:213366845955:web:e54ee3cda4b2c134071436",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const email =
+            document.getElementById("fullName").value + "@example.com";
+          const password = document.getElementById("password").value;
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              alert("Login successful!");
+
+              localStorage.setItem("loggedIn", "true");
+              window.location.href = "index.html";
+            })
+            .catch((error) => {
+              alert("Error: " + error.message);
+            });
+        });
+
+      if (!localStorage.getItem("registered")) {
+        window.location.href = "register.html";
+      }
+    </script>
+
+    <script src="./assets/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .getElementById("langToggle")
+        .addEventListener("click", function () {
+          const isArabic = document.body.classList.toggle("ar");
+          document.body.classList.toggle("en", !isArabic);
+
+          if (isArabic) {
+            document.getElementById("fullNameLabel").innerText = "إسم المستخدم";
+            document.getElementById("fullName").placeholder = "إسم المستخدم";
+            document.getElementById("passwordLabel").innerText = "كلمة السر";
+            document.getElementById("password").placeholder = "كلمة السر";
+            document.getElementById("submitButton").innerText = "تسجيل الدخول";
+          } else {
+            document.getElementById("fullNameLabel").innerText = "User name";
+            document.getElementById("fullName").placeholder = "User name";
+            document.getElementById("passwordLabel").innerText = "Password";
+            document.getElementById("password").placeholder = "Password";
+            document.getElementById("submitButton").innerText = "Login";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="./assets/css/register.css" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="ar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html" id="brandName">
+          <span id="brandText">النقل بإستخدام</span>
+          <img
+            src="./assets/images/logo.jpg"
+            alt="logo"
+            style="height: 30px; width: 30px"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="about">معلومات عننا</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="jobs">الوظائف</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="langToggle">
+                <span>AR-EN</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="help">المساعدة</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.html" id="register"
+                >تسجيل الدخول</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-dark border border-danger rounded-pill"
+                href=""
+                id="login"
+                >التسجيل</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="form-container">
+        <img src="./assets/images/logo.jpg" alt="Logo" />
+        <form id="registrationForm">
+          <div class="form-group">
+            <label for="fullName" id="fullNameLabel">الأسم كامل</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fullName"
+              placeholder="الإسم كامل"
+              autocomplete="additional-name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password" id="passwordLabel">كلمة السر</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="كلمة السر"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="location" id="locationLabel">البلد/المدينة</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              placeholder="البلد/المدينة"
+              autocomplete="address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone" id="phoneLabel">رقم الهاتف</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              placeholder="رقم الهاتف"
+              autocomplete="tel"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-danger btn-block"
+            id="submitButton"
+          >
+            التسجيل
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js"></script>
+
+    <script type="module" async>
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAy8nUYvMqn4acRcR7hhT9tV3tPam0kXW8",
+        authDomain: "ala-darbak-40748.firebaseapp.com",
+        projectId: "ala-darbak-40748",
+        storageBucket: "ala-darbak-40748.appspot.com",
+        messagingSenderId: "213366845955",
+        appId: "1:213366845955:web:e54ee3cda4b2c134071436",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const fullName = document.getElementById("fullName").value;
+          const password = document.getElementById("password").value;
+          const location = document.getElementById("location").value;
+          const phone = document.getElementById("phone").value;
+
+          try {
+            const userCredential = await createUserWithEmailAndPassword(
+              auth,
+              fullName + "@example.com",
+              password
+            );
+            const userId = userCredential.user.uid;
+
+            await setDoc(doc(db, "users", userId), {
+              fullName: fullName,
+              password: password,
+              location: location,
+              phone: phone,
+            });
+
+            alert("Registration successful!");
+
+            localStorage.setItem("registered", "true");
+            window.location.href = "login.html";
+          } catch (error) {
+            alert("Error: " + error.message);
+          }
+        });
+
+      if (localStorage.getItem("registered")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <script src="./assets/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .getElementById("langToggle")
+        .addEventListener("click", function () {
+          const isArabic = document.body.classList.toggle("ar");
+          document.body.classList.toggle("en", !isArabic);
+
+          if (isArabic) {
+            document.getElementById("fullNameLabel").innerText = "الأسم كامل";
+            document.getElementById("passwordLabel").innerText = "كلمة السر";
+            document.getElementById("locationLabel").innerText =
+              "البلد/المدينة";
+            document.getElementById("phoneLabel").innerText = "رقم الهاتف";
+            document.getElementById("fullName").placeholder = "الإسم كامل";
+            document.getElementById("password").placeholder = "كلمة السر";
+            document.getElementById("location").placeholder = "البلد/المدينة";
+            document.getElementById("phone").placeholder = "رقم الهاتف";
+            document.getElementById("submitButton").innerText = "التسجيل";
+          } else {
+            document.getElementById("fullNameLabel").innerText = "Full Name";
+            document.getElementById("passwordLabel").innerText = "Password";
+            document.getElementById("locationLabel").innerText = "Country/City";
+            document.getElementById("phoneLabel").innerText = "Phone Number";
+            document.getElementById("fullName").placeholder = "Full Name";
+            document.getElementById("password").placeholder = "Password";
+            document.getElementById("location").placeholder = "Country/City";
+            document.getElementById("phone").placeholder = "Phone Number";
+            document.getElementById("submitButton").innerText = "Register";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans Arabic", sans-serif;
+  direction: rtl;
+}
+
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../images/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+nav {
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+nav a {
+  color: #e3510c !important;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav a:hover {
+  color: black !important;
+  transition: 0.6s ease;
+  font-size: 18px;
+}
+
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.container .home {
+  text-align: center;
+  max-width: 600px;
+}
+
+.container .home h1,
+.container .home h6 {
+  color: #fff;
+  font-weight: bolder;
+}
+
+.container .home .buttons {
+  margin-top: 20px;
+}
+
+.container .home .btn1 {
+  background-color: #f85a0e !important;
+  color: #fff;
+}
+
+.m {
+  margin: 15px 0;
+}
+
+@media (max-width: 575.98px) {
+  nav a {
+    font-size: 14px;
+  }
+
+  .navbar-brand img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .container .home h1 {
+    font-size: 24px;
+  }
+
+  .container .home h6 {
+    font-size: 14px;
+  }
+
+  .container .home .btn1,
+  .container .home .btn-light,
+  .container .home .btn-danger {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .container .home h1 {
+    font-size: 28px;
+  }
+
+  .container .home h6 {
+    font-size: 16px;
+  }
+
+  .container .home .btn1,
+  .container .home .btn-light,
+  .container .home .btn-danger {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container .home h1 {
+    font-size: 32px;
+  }
+
+  .container .home h6 {
+    font-size: 18px;
+  }
+
+  .container .home .btn1,
+  .container .home .btn-light,
+  .container .home .btn-danger {
+    font-size: 18px;
+    padding: 14px 0;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .container .home h1 {
+    font-size: 36px;
+  }
+
+  .container .home h6 {
+    font-size: 20px;
+  }
+
+  .container .home .btn1,
+  .container .home .btn-light,
+  .container .home .btn-danger {
+    font-size: 20px;
+    padding: 16px 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container .home h1 {
+    font-size: 40px;
+  }
+
+  .container .home h6 {
+    font-size: 22px;
+  }
+
+  .container .home .btn1,
+  .container .home .btn-light,
+  .container .home .btn-danger {
+    font-size: 22px;
+    padding: 18px 0;
+  }
+}
