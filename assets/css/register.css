@@ -72,3 +72,9 @@ body.en input::placeholder {
 body.ar input::placeholder {
   text-align: right;
 }
+select {
+  direction: rtl;
+  text-align: right;
+  appearance: none; 
+  padding-right: 20px; 
+}
