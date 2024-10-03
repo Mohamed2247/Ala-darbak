@@ -60,7 +60,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-dark border border-danger rounded-pill"
-                href=""
+                href="login.html"
                 id="login"
                 >التسجيل</a
               >
@@ -96,15 +96,31 @@
             />
           </div>
           <div class="form-group">
-            <label for="location" id="locationLabel">البلد/المدينة</label>
-            <input
-              type="text"
+            <label for="ccity" id="selectCity">اختر المدينة</label>
+            <select
               class="form-control"
-              id="location"
-              placeholder="البلد/المدينة"
-              autocomplete="address"
+              autocomplete="country-name"
+              id="ccity"
               required
-            />
+            >
+              <option value="" disabled selected id="city">اختر مدينتك</option>
+              <option value="Riyadh" id="Riyadh">الرياض</option>
+              <option value="Jeddah" id="Jeddah">جده</option>
+              <option value="Dammam" id="Dammam">الدمام</option>
+              <option value="Khobar" id="Khobar">الخبر</option>
+              <option value="Mecca" id="Mecca">مكة</option>
+              <option value="Medina" id="Medina">المدينة</option>
+              <option value="Abha" id="Abha">أبها</option>
+              <option value="Buraidah" id="Buraidah">بريدة</option>
+              <option value="Tabuk" id="Tabuk">تابوك</option>
+              <option value="Najran" id="Najran">نجران</option>
+              <option value="Hail" id="Hail">حائل</option>
+              <option value="Jizan" id="Jizan">جازان</option>
+              <option value="Qassim" id="Qassim">القصيم</option>
+              <option value="Al Ahsa" id="Ahsa">الاحساء</option>
+              <option value="Yanbu" id="Yanbu">ينبع</option>
+              <option value="Khamis Mushayt" id="Khamis">خميس مشيط</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="phone" id="phoneLabel">رقم الهاتف</label>
@@ -112,8 +128,8 @@
               type="tel"
               class="form-control"
               id="phone"
-              placeholder="رقم الهاتف"
-              autocomplete="tel"
+              placeholder="أدخل رقم هاتفك"
+              autocomplete="mobile"
               required
             />
           </div>
@@ -128,9 +144,18 @@
       </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js"></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js"
+    ></script>
 
     <script type="module" async>
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
@@ -164,8 +189,17 @@
 
           const fullName = document.getElementById("fullName").value;
           const password = document.getElementById("password").value;
-          const location = document.getElementById("location").value;
+          const city = document.getElementById("ccity").value;
           const phone = document.getElementById("phone").value;
+          const passwordRegex =
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+~\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
+          if (!passwordRegex.test(password)) {
+            alert(
+              "The password is invalid. Must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
+            );
+            return;
+          }
 
           try {
             const userCredential = await createUserWithEmailAndPassword(
@@ -178,58 +212,33 @@
             await setDoc(doc(db, "users", userId), {
               fullName: fullName,
               password: password,
-              location: location,
+              city: city,
               phone: phone,
             });
 
             alert("Registration successful!");
 
-            localStorage.setItem("registered", "true");
             window.location.href = "login.html";
           } catch (error) {
             alert("Error: " + error.message);
           }
         });
 
-      if (localStorage.getItem("registered")) {
-        window.location.href = "login.html";
-      }
-    </script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("ccity")
+          .addEventListener("change", function () {
+            console.log("City selected:", this.value);
 
-    <script src="./assets/js/main.js"></script>
+            const phoneInput = document.getElementById("phone");
+            phoneInput.value = "+966 ";
+            phoneInput.focus();
+          });
+      });
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-      document
-        .getElementById("langToggle")
-        .addEventListener("click", function () {
-          const isArabic = document.body.classList.toggle("ar");
-          document.body.classList.toggle("en", !isArabic);
-
-          if (isArabic) {
-            document.getElementById("fullNameLabel").innerText = "الأسم كامل";
-            document.getElementById("passwordLabel").innerText = "كلمة السر";
-            document.getElementById("locationLabel").innerText =
-              "البلد/المدينة";
-            document.getElementById("phoneLabel").innerText = "رقم الهاتف";
-            document.getElementById("fullName").placeholder = "الإسم كامل";
-            document.getElementById("password").placeholder = "كلمة السر";
-            document.getElementById("location").placeholder = "البلد/المدينة";
-            document.getElementById("phone").placeholder = "رقم الهاتف";
-            document.getElementById("submitButton").innerText = "التسجيل";
-          } else {
-            document.getElementById("fullNameLabel").innerText = "Full Name";
-            document.getElementById("passwordLabel").innerText = "Password";
-            document.getElementById("locationLabel").innerText = "Country/City";
-            document.getElementById("phoneLabel").innerText = "Phone Number";
-            document.getElementById("fullName").placeholder = "Full Name";
-            document.getElementById("password").placeholder = "Password";
-            document.getElementById("location").placeholder = "Country/City";
-            document.getElementById("phone").placeholder = "Phone Number";
-            document.getElementById("submitButton").innerText = "Register";
-          }
-        });
-    </script>
+    <script src="./assets/js/main.js"></script>
   </body>
 </html>
