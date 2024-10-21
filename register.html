@@ -157,7 +157,7 @@
       src="https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js"
     ></script>
 
-    <script type="module" async>
+   <script type="module" async>
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
       import {
         getAuth,
@@ -182,49 +182,67 @@
       const auth = getAuth(app);
       const db = getFirestore(app);
 
-      document
-        .getElementById("registrationForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
+      import {
+  getDocs,
+  collection,
+  query,
+  where,
+} from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
 
-          const fullName = document.getElementById("fullName").value;
-          const password = document.getElementById("password").value;
-          const city = document.getElementById("ccity").value;
-          const phone = document.getElementById("phone").value;
-          const passwordRegex =
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+~\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+document
+  .getElementById("registrationForm")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-          if (!passwordRegex.test(password)) {
-            alert(
-              "The password is invalid. Must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
-            );
-            return;
-          }
+    const fullName = document.getElementById("fullName").value;
+    const password = document.getElementById("password").value;
+    const city = document.getElementById("ccity").value;
+    const phone = document.getElementById("phone").value;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+~\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
 
-          try {
-            const userCredential = await createUserWithEmailAndPassword(
-              auth,
-              fullName + "@example.com",
-              password
-            );
-            const userId = userCredential.user.uid;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "The password is invalid. Must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
+      );
+      return;
+    }
 
-            await setDoc(doc(db, "users", userId), {
-              fullName: fullName,
-              password: password,
-              city: city,
-              phone: phone,
-            });
+    // تحقق من وجود اسم المستخدم
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("fullName", "==", fullName));
+    const snapshot = await getDocs(q);
 
-            alert("Registration successful!");
+    if (!snapshot.empty) {
+      alert("username already in use.");
+      return;
+    }
 
-            window.location.href = "login.html";
-          } catch (error) {
-            alert("Error: " + error.message);
-          }
-        });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        fullName + "@example.com",
+        password
+      );
+      const userId = userCredential.user.uid;
 
-       document.addEventListener("DOMContentLoaded", function () {
+      await setDoc(doc(db, "users", userId), {
+        fullName: fullName,
+        password: password,
+        city: city,
+        phone: phone,
+      });
+
+      alert("Registration successful!");
+
+      window.location.href = "login.html";
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  });
+
+
+      document.addEventListener("DOMContentLoaded", function () {
         const phoneInput = document.getElementById("phone");
         if (phoneInput) {
           document
