@@ -224,16 +224,19 @@
           }
         });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        document
-          .getElementById("ccity")
-          .addEventListener("change", function () {
-            console.log("City selected:", this.value);
-
-            const phoneInput = document.getElementById("phone");
-            phoneInput.value = "+966 ";
-            phoneInput.focus();
-          });
+       document.addEventListener("DOMContentLoaded", function () {
+        const phoneInput = document.getElementById("phone");
+        if (phoneInput) {
+          document
+            .getElementById("ccity")
+            .addEventListener("change", function () {
+              console.log("City selected:", this.value);
+              setTimeout(() => {
+                phoneInput.value = "+966 ";
+                phoneInput.focus();
+              }, 100);
+            });
+        }
       });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
