@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectCityElement.textContent = translations[currentLang].selectCity;
 
     if (RiyadhElement)
-      RiyadhElement.textContent = translations[currentLang].Riyad;
+      RiyadhElement.textContent = translations[currentLang].Riyadh;
     if (JeddahElement)
       JeddahElement.textContent = translations[currentLang].Jeddah;
     if (DammamElement)
