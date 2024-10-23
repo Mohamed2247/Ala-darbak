@@ -134,35 +134,6 @@
             </datalist>
           </div>
 
-          <!-- <div class="form-group">
-            <label for="ccity" id="selectCity">اختر المدينة</label>
-            <select
-              class="form-control" 
-              autocomplete="country-name"
-              id="ccity"
-              required
-            >
-            
-              <option value="" disabled selected id="city">اختر مدينتك</option>
-              <option value="Riyadh" id="Riyadh">الرياض</option>
-              <option value="Jeddah" id="Jeddah">جده</option>
-              <option value="Dammam" id="Dammam">الدمام</option>
-              <option value="Khobar" id="Khobar">الخبر</option>
-              <option value="Mecca" id="Mecca">مكة</option>
-              <option value="Medina" id="Medina">المدينة</option>
-              <option value="Abha" id="Abha">أبها</option>
-              <option value="Buraidah" id="Buraidah">بريدة</option>
-              <option value="Tabuk" id="Tabuk">تابوك</option>
-              <option value="Najran" id="Najran">نجران</option>
-              <option value="Hail" id="Hail">حائل</option>
-              <option value="Jizan" id="Jizan">جازان</option>
-              <option value="Qassim" id="Qassim">القصيم</option>
-              <option value="Al Ahsa" id="Ahsa">الاحساء</option>
-              <option value="Yanbu" id="Yanbu">ينبع</option>
-              <option value="Khamis Mushayt" id="Khamis">خميس مشيط</option>
-            </select>
-          </div> -->
-
           <div class="form-group">
             <label for="phone" id="phoneLabel">رقم الهاتف</label>
             <input
@@ -361,37 +332,34 @@
         document.getElementById("email").placeholder =
           translations[currentLang].emailPlaceholder;
 
-        document.getElementById("Riyadh").textContent =
+        document.getElementById("Riyadh").value =
           translations[currentLang].Riyadh;
-        document.getElementById("Jeddah").textContent =
+        document.getElementById("Jeddah").value =
           translations[currentLang].Jeddah;
-        document.getElementById("Dammam").textContent =
+        document.getElementById("Dammam").value =
           translations[currentLang].Dammam;
-        document.getElementById("Khobar").textContent =
+        document.getElementById("Khobar").value =
           translations[currentLang].Khobar;
-        document.getElementById("Mecca").textContent =
+        document.getElementById("Mecca").value =
           translations[currentLang].Mecca;
-        document.getElementById("Medina").textContent =
+        document.getElementById("Medina").value =
           translations[currentLang].Medina;
-        document.getElementById("Abha").textContent =
-          translations[currentLang].Abha;
-        document.getElementById("Buraidah").textContent =
+        document.getElementById("Abha").value = translations[currentLang].Abha;
+        document.getElementById("Buraidah").value =
           translations[currentLang].Buraidah;
-        document.getElementById("Tabuk").textContent =
+        document.getElementById("Tabuk").value =
           translations[currentLang].Tabuk;
-        document.getElementById("Najran").textContent =
+        document.getElementById("Najran").value =
           translations[currentLang].Najran;
-        document.getElementById("Hail").textContent =
-          translations[currentLang].Hail;
-        document.getElementById("Jizan").textContent =
+        document.getElementById("Hail").value = translations[currentLang].Hail;
+        document.getElementById("Jizan").value =
           translations[currentLang].Jizan;
-        document.getElementById("Qassim").textContent =
+        document.getElementById("Qassim").value =
           translations[currentLang].Qassim;
-        document.getElementById("Ahsa").textContent =
-          translations[currentLang].Ahsa;
-        document.getElementById("Yanbu").textContent =
+        document.getElementById("Ahsa").value = translations[currentLang].Ahsa;
+        document.getElementById("Yanbu").value =
           translations[currentLang].Yanbu;
-        document.getElementById("Khamis").textContent =
+        document.getElementById("Khamis").value =
           translations[currentLang].Khamis;
       }
 
