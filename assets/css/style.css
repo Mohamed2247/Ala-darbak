@@ -175,3 +175,7 @@ nav a:hover {
     padding: 18px 0;
   }
 }
+.active {
+  color: black !important; 
+  font-size: 1.2rem; 
+}
