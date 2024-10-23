@@ -13,11 +13,15 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body class="ar">
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.html" id="brandName">
+        <a class="navbar-brand" href="#" id="brandName">
           <span id="brandText">النقل بإستخدام</span>
           <img
             src="./assets/images/logo.jpg"
@@ -45,9 +49,9 @@
               <a class="nav-link" href="#" id="jobs">الوظائف</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" id="langToggle">
-                <span>AR-EN</span>
-              </a>
+              <a class="nav-link" href="#" id="langToggle"
+                ><span>AR-EN</span></a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#" id="help">المساعدة</a>
@@ -58,12 +62,7 @@
               >
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link text-dark border border-danger rounded-pill"
-                href="login.html"
-                id="login"
-                >التسجيل</a
-              >
+              <a class="nav-link" href="login.html" id="login">التسجيل</a>
             </li>
           </ul>
         </div>
@@ -85,6 +84,17 @@
             />
           </div>
           <div class="form-group">
+            <label for="email" id="emailLabel">البريد الإلكتروني</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="البريد الإلكتروني"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group">
             <label for="password" id="passwordLabel">كلمة السر</label>
             <input
               type="password"
@@ -96,13 +106,43 @@
             />
           </div>
           <div class="form-group">
+            <label for="city" id="selectCity">اختر المدينة</label>
+            <input
+              list="cities"
+              class="form-control"
+              id="city"
+              placeholder="اختر مدينتك"
+              required
+            />
+            <datalist id="cities">
+              <option value="الرياض" id="Riyadh"></option>
+              <option value="جده" id="Jeddah"></option>
+              <option value="الدمام" id="Dammam"></option>
+              <option value="الخبر" id="Khobar"></option>
+              <option value="مكة" id="Mecca"></option>
+              <option value="المدينة" id="Medina"></option>
+              <option value="أبها" id="Abha"></option>
+              <option value="بريدة" id="Buraidah"></option>
+              <option value="تابوك" id="Tabuk"></option>
+              <option value="نجران" id="Najran"></option>
+              <option value="حائل" id="Hail"></option>
+              <option value="جازان" id="Jizan"></option>
+              <option value="القصيم" id="Qassim"></option>
+              <option value="الاحساء" id="Ahsa"></option>
+              <option value="ينبع" id="Yanbu"></option>
+              <option value="خميس مشيط" id="Khamis"></option>
+            </datalist>
+          </div>
+
+          <!-- <div class="form-group">
             <label for="ccity" id="selectCity">اختر المدينة</label>
             <select
-              class="form-control"
+              class="form-control" 
               autocomplete="country-name"
               id="ccity"
               required
             >
+            
               <option value="" disabled selected id="city">اختر مدينتك</option>
               <option value="Riyadh" id="Riyadh">الرياض</option>
               <option value="Jeddah" id="Jeddah">جده</option>
@@ -121,22 +161,25 @@
               <option value="Yanbu" id="Yanbu">ينبع</option>
               <option value="Khamis Mushayt" id="Khamis">خميس مشيط</option>
             </select>
-          </div>
+          </div> -->
+
           <div class="form-group">
             <label for="phone" id="phoneLabel">رقم الهاتف</label>
             <input
               type="tel"
               class="form-control"
               id="phone"
-              placeholder="أدخل رقم هاتفك"
+              placeholder="+966"
               autocomplete="mobile"
               required
+              oninput="validatePhoneNumber(this)"
+              value="+966"
             />
           </div>
           <button
             type="submit"
             class="btn btn-danger btn-block"
-            id="submitButton"
+            id="registerButton"
           >
             التسجيل
           </button>
@@ -157,7 +200,7 @@
       src="https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js"
     ></script>
 
-   <script type="module" async>
+    <script type="module" async>
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
       import {
         getAuth,
@@ -167,6 +210,12 @@
         getFirestore,
         doc,
         setDoc,
+      } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+      import {
+        getDocs,
+        collection,
+        query,
+        where,
       } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -182,84 +231,234 @@
       const auth = getAuth(app);
       const db = getFirestore(app);
 
-      import {
-  getDocs,
-  collection,
-  query,
-  where,
-} from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+      const translations = {
+        ar: {
+          brandName: "النقل بإستخدام",
+          about: "معلومات عننا",
+          jobs: "الوظائف",
+          help: "المساعدة",
+          login: "تسجيل الدخول",
+          register: "التسجيل",
+          fullNameLabel: "الأسم كامل",
+          fullNamePlaceholder: "الإسم كامل",
+          emailLabel: "البريد الإكتروني",
+          emailPlaceholder: "البريد الإكتروني",
+          passwordLabel: "كلمة السر",
+          passwordPlaceholder: "كلمة السر",
+          locationLabel: "اختر المدينة",
+          city: "اختر مدينتك",
+          cityPlaceholder: "اختر مدينتك",
+          phoneLabel: "رقم الهاتف",
+          phonePlaceholder: "أدخل رقم هاتفك",
+          registerButton: "التسجيل",
+          invalidPasswordAlert:
+            "كلمة المرور غير صالحة. يجب أن يحتوي على 8 أحرف على الأقل ، بما في ذلك حرف كبير وحرف صغير ورقم ورمز.",
+          emailExistsAlert:
+            "هذا البريد الإلكتروني مستخدم مسبقًا. يرجى اختيار بريد إلكتروني مختلف.",
+          registrationSuccess: "تم التسجيل بنجاح!",
+          registrationError: "خطأ في التسجيل: ",
 
-document
-  .getElementById("registrationForm")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault();
+          Riyadh: "الرياض",
+          Jeddah: "جده",
+          Dammam: "الدمام",
+          Khobar: "الخبر",
+          Mecca: "مكة",
+          Medina: "المدينة",
+          Abha: "أبها",
+          Buraidah: "بريدة",
+          Tabuk: "تابوك",
+          Najran: "نجران",
+          Hail: "حائل",
+          Jizan: "جازان",
+          Qassim: "القصيم",
+          Ahsa: "الاحساء",
+          Yanbu: "ينبع",
+          Khamis: "خميس مشيط",
+        },
+        en: {
+          brandName: "Transport With",
+          about: "About Us",
+          jobs: "Jobs",
+          help: "Help",
+          login: "Login",
+          register: "Register",
+          fullNameLabel: "Full Name",
+          fullNamePlaceholder: "Full Name",
+          passwordLabel: "Password",
+          passwordPlaceholder: "Password",
+          locationLabel: "Select City",
+          city: "Select your city",
+          cityPlaceholder: "Select your city",
+          phoneLabel: "Phone Number",
+          phonePlaceholder: "Enter your phone number",
+          registerButton: "Register",
+          emailLabel: "E-mail Address",
+          emailPlaceholder: "E-mail Address",
+          invalidPasswordAlert:
+            "The password is invalid. Must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a symbol.",
+          emailExistsAlert:
+            "This email is already used. Please choose a different email.",
+          registrationSuccess: "Registration successful!",
+          registrationError: "Registration error: ",
 
-    const fullName = document.getElementById("fullName").value;
-    const password = document.getElementById("password").value;
-    const city = document.getElementById("ccity").value;
-    const phone = document.getElementById("phone").value;
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+~\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+          Riyadh: "Riyadh",
+          Jeddah: "Jeddah",
+          Dammam: "Dammam",
+          Khobar: "Khobar",
+          Mecca: "Mecca",
+          Medina: "Medina",
+          Abha: "Abha",
+          Buraidah: "Buraidah",
+          Tabuk: "Tabuk",
+          Najran: "Najran",
+          Hail: "Hail",
+          Jizan: "Jizan",
+          Qassim: "Qassim",
+          Ahsa: "Ahsa",
+          Yanbu: "Yanbu",
+          Khamis: "Khamis Mushayt",
+        },
+      };
 
-    if (!passwordRegex.test(password)) {
-      alert(
-        "The password is invalid. Must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
-      );
-      return;
-    }
+      let currentLang = localStorage.getItem("lang") || "ar";
 
-    // تحقق من وجود اسم المستخدم
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("fullName", "==", fullName));
-    const snapshot = await getDocs(q);
+      function updateContent() {
+        document.getElementById("brandText").textContent =
+          translations[currentLang].brandName;
+        document.getElementById("about").textContent =
+          translations[currentLang].about;
+        document.getElementById("jobs").textContent =
+          translations[currentLang].jobs;
+        document.getElementById("help").textContent =
+          translations[currentLang].help;
+        document.getElementById("login").textContent =
+          translations[currentLang].login;
+        document.getElementById("register").textContent =
+          translations[currentLang].register;
 
-    if (!snapshot.empty) {
-      alert("username already in use.");
-      return;
-    }
+        document.getElementById("fullNameLabel").textContent =
+          translations[currentLang].fullNameLabel;
+        document.getElementById("fullName").placeholder =
+          translations[currentLang].fullNamePlaceholder;
+        document.getElementById("passwordLabel").textContent =
+          translations[currentLang].passwordLabel;
+        document.getElementById("password").placeholder =
+          translations[currentLang].passwordPlaceholder;
+        document.getElementById("selectCity").textContent =
+          translations[currentLang].locationLabel;
+        document.getElementById("city").textContent =
+          translations[currentLang].city;
+        document.getElementById("city").placeholder =
+          translations[currentLang].cityPlaceholder;
+        document.getElementById("phoneLabel").textContent =
+          translations[currentLang].phoneLabel;
+        document.getElementById("phone").placeholder =
+          translations[currentLang].phonePlaceholder;
+        document.getElementById("registerButton").textContent =
+          translations[currentLang].registerButton;
+        document.getElementById("emailLabel").textContent =
+          translations[currentLang].emailLabel;
+        document.getElementById("email").placeholder =
+          translations[currentLang].emailPlaceholder;
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        fullName + "@example.com",
-        password
-      );
-      const userId = userCredential.user.uid;
+        document.getElementById("Riyadh").textContent =
+          translations[currentLang].Riyadh;
+        document.getElementById("Jeddah").textContent =
+          translations[currentLang].Jeddah;
+        document.getElementById("Dammam").textContent =
+          translations[currentLang].Dammam;
+        document.getElementById("Khobar").textContent =
+          translations[currentLang].Khobar;
+        document.getElementById("Mecca").textContent =
+          translations[currentLang].Mecca;
+        document.getElementById("Medina").textContent =
+          translations[currentLang].Medina;
+        document.getElementById("Abha").textContent =
+          translations[currentLang].Abha;
+        document.getElementById("Buraidah").textContent =
+          translations[currentLang].Buraidah;
+        document.getElementById("Tabuk").textContent =
+          translations[currentLang].Tabuk;
+        document.getElementById("Najran").textContent =
+          translations[currentLang].Najran;
+        document.getElementById("Hail").textContent =
+          translations[currentLang].Hail;
+        document.getElementById("Jizan").textContent =
+          translations[currentLang].Jizan;
+        document.getElementById("Qassim").textContent =
+          translations[currentLang].Qassim;
+        document.getElementById("Ahsa").textContent =
+          translations[currentLang].Ahsa;
+        document.getElementById("Yanbu").textContent =
+          translations[currentLang].Yanbu;
+        document.getElementById("Khamis").textContent =
+          translations[currentLang].Khamis;
+      }
 
-      await setDoc(doc(db, "users", userId), {
-        fullName: fullName,
-        password: password,
-        city: city,
-        phone: phone,
-      });
+      document
+        .getElementById("langToggle")
+        .addEventListener("click", function () {
+          currentLang = currentLang === "ar" ? "en" : "ar";
+          localStorage.setItem("lang", currentLang);
+          updateContent();
+        });
 
-      alert("Registration successful!");
+      updateContent();
 
-      window.location.href = "login.html";
-    } catch (error) {
-      alert("Error: " + error.message);
-    }
-  });
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
+          const fullName = document.getElementById("fullName").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const city = document.getElementById("city").value;
+          const phone = document.getElementById("phone").value;
+          const passwordRegex =
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+~\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const phoneInput = document.getElementById("phone");
-        if (phoneInput) {
-          document
-            .getElementById("ccity")
-            .addEventListener("change", function () {
-              console.log("City selected:", this.value);
-              setTimeout(() => {
-                phoneInput.value = "+966 ";
-                phoneInput.focus();
-              }, 100);
+          if (!passwordRegex.test(password)) {
+            alert(translations[currentLang].invalidPasswordAlert);
+            return;
+          }
+          const usersRef = collection(db, "users");
+          const q = query(usersRef, where("email", "==", email));
+          const snapshot = await getDocs(q);
+
+          if (!snapshot.empty) {
+            alert(translations[currentLang].emailExistsAlert);
+            return;
+          }
+          try {
+            const userCredential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+              fullName: fullName,
+              email: email,
+              password: password,
+              city: city,
+              phone: phone,
             });
-        }
-      });
+
+            alert(translations[currentLang].registrationSuccess);
+            window.location.href = "/login.html";
+          } catch (error) {
+            alert(translations[currentLang].registrationError);
+          }
+        });
     </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script src="./assets/js/main.js"></script>
   </body>
 </html>
