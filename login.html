@@ -53,17 +53,10 @@
               <a class="nav-link" href="#" id="help">المساعدة</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="register.html" id="register"
-                >تسجيل الدخول</a
-              >
+              <a class="nav-link" href="register.html" id="register">التسجيل</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link text-dark border border-danger rounded-pill"
-                href="login.html"
-                id="login"
-                >التسجيل</a
-              >
+              <a class="nav-link" href="login.html" id="login">تسجيل الدخول</a>
             </li>
           </ul>
         </div>
@@ -75,30 +68,31 @@
         <img src="./assets/images/logo.jpg" alt="Logo" />
         <form id="loginForm">
           <div class="form-group">
-            <label for="fullName" id="fullNameLabel">إسم المستخدم</label>
+            <label for="email" id="emailLabel">البريد الإلكتروني</label>
             <input
-              type="text"
+              type="email"
               class="form-control"
-              id="fullName"
-              placeholder="إسم المستخدم"
-              autocomplete="additional-name"
+              id="email"
+              placeholder="البريد الإلكتروني"
+              required
             />
           </div>
           <div class="form-group">
-            <label for="password" id="passwordLabel">الأسم كامل</label>
+            <label for="password" id="passwordLabel">كلمة السر</label>
             <input
               type="password"
               class="form-control"
               id="password"
               placeholder="كلمة السر"
               autocomplete="additional-name"
+              required
             />
           </div>
 
           <button
             type="submit"
             class="btn btn-danger btn-block"
-            id="submitButton"
+            id="loginButton"
           >
             تسجيل الدخول
           </button>
@@ -125,29 +119,101 @@
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
 
+      // Define translations
+      const translations = {
+        ar: {
+          brandName: "النقل بإستخدام",
+          about: "معلومات عننا",
+          jobs: "الوظائف",
+          help: "المساعدة",
+          login: "تسجيل الدخول",
+          register: "التسجيل",
+          emailLabel: "البريد الإلكتروني",
+          emailPlaceholder: "البريد الإلكتروني",
+          passwordLabel: "كلمة السر",
+          passwordPlaceholder: "كلمة السر",
+          loginButton: "تسجيل الدخول",
+          loginSuccess: "تم تسجيل الدخول بنجاح!",
+          loginError: "فشل في تسجيل الدخول! ",
+          invalidPasswordAlert: "يرجى ملء كلا من البريد الإلكتروني وكلمة السر.",
+        },
+        en: {
+          brandName: "Transport With",
+          about: "About Us",
+          jobs: "Jobs",
+          help: "Help",
+          login: "Login",
+          register: "Register",
+          emailLabel: "E-mail Address",
+          emailPlaceholder: "E-mail Address",
+          passwordLabel: "Password",
+          passwordPlaceholder: "Password",
+          loginButton: "Login",
+          loginSuccess: "Login successful!",
+          loginError: "Login failed! ",
+          invalidPasswordAlert: "Please fill out both email and password.",
+        },
+      };
+
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
 
-          const email =
-            document.getElementById("fullName").value + "@example.com";
+          const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
 
           if (email && password) {
             signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
-                alert("Login successful!");
-                localStorage.setItem("loggedIn", "true"); 
-                window.location.href = "index.html"; 
+                alert(translations[currentLang].loginSuccess);
+                localStorage.setItem("loggedIn", "true");
+                window.location.href = "index.html";
               })
               .catch((error) => {
-                alert("Login failed: " + error.message);
+                alert(translations[currentLang].loginError);
               });
           } else {
-            alert("Please fill in both email and password.");
+            alert(translations[currentLang].invalidPasswordAlert);
           }
         });
+
+      let currentLang = localStorage.getItem("lang") || "ar";
+
+      function updateContent() {
+        document.getElementById("brandText").textContent =
+          translations[currentLang].brandName;
+        document.getElementById("about").textContent =
+          translations[currentLang].about;
+        document.getElementById("jobs").textContent =
+          translations[currentLang].jobs;
+        document.getElementById("help").textContent =
+          translations[currentLang].help;
+        document.getElementById("login").textContent =
+          translations[currentLang].login;
+        document.getElementById("register").textContent =
+          translations[currentLang].register;
+        document.getElementById("emailLabel").textContent =
+          translations[currentLang].emailLabel;
+        document.getElementById("email").placeholder =
+          translations[currentLang].emailPlaceholder;
+        document.getElementById("passwordLabel").textContent =
+          translations[currentLang].passwordLabel;
+        document.getElementById("password").placeholder =
+          translations[currentLang].passwordPlaceholder;
+        document.getElementById("loginButton").textContent =
+          translations[currentLang].loginButton;
+      }
+
+      document
+        .getElementById("langToggle")
+        .addEventListener("click", function () {
+          currentLang = currentLang === "ar" ? "en" : "ar";
+          localStorage.setItem("lang", currentLang);
+          updateContent();
+        });
+
+      updateContent();
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
