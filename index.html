@@ -53,7 +53,9 @@
             <li class="nav-item">
               <a class="nav-link" href="#" id="help">المساعدة</a>
             </li>
-            <button onclick="logout()" class="btn btn-danger" id="Logout">تسجيل خروج</button>
+            <button onclick="logout()" class="btn btn-danger" id="Logout">
+              تسجيل خروج
+            </button>
           </ul>
         </div>
       </div>
@@ -75,17 +77,83 @@
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-          if (!localStorage.getItem("loggedIn")) {
-              window.location.href = "register.html";
-          }
+        if (!localStorage.getItem("loggedIn")) {
+          window.location.href = "register.html";
+        }
       });
 
       function logout() {
-          localStorage.removeItem("loggedIn"); 
-          window.location.href = "login.html"; 
+        localStorage.removeItem("loggedIn");
+        window.location.href = "login.html";
       }
-  </script>
-    
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const translations = {
+          ar: {
+            brandName: "النقل بإستخدام",
+            about: "معلومات عننا",
+            jobs: "الوظائف",
+            help: "المساعدة",
+            logout: "تسجيل الخروج",
+            header: "أنقل أي بضائع على دربك",
+            subheader: "اطلب سيارة واشحن ولا تقلق عليها",
+            requestCar: "اطلب سيارة",
+            chooseDestination: "اختار الوجهة",
+            enterGoodsSize: "ادخل حجم البضائع",
+          },
+          en: {
+            brandName: "Transport With",
+            about: "About Us",
+            jobs: "Jobs",
+            help: "Help",
+            logout: "logout",
+            header: "Transport any goods by Ala Darbak",
+            subheader: "Request a car, charge and don't worry about it",
+            requestCar: "Request a car",
+            chooseDestination: "Choose destination",
+            enterGoodsSize: "Enter goods size",
+          },
+        };
+
+        let currentLang = localStorage.getItem("lang") || "ar";
+
+        function updateContent() {
+          document.getElementById("brandText").textContent =
+            translations[currentLang].brandName;
+          document.getElementById("about").textContent =
+            translations[currentLang].about;
+          document.getElementById("jobs").textContent =
+            translations[currentLang].jobs;
+          document.getElementById("help").textContent =
+            translations[currentLang].help;
+          document.getElementById("Logout").textContent =
+            translations[currentLang].logout;
+          document.getElementById("header").textContent =
+            translations[currentLang].header;
+          document.getElementById("subheader").textContent =
+            translations[currentLang].subheader;
+          document.getElementById("requestCar").textContent =
+            translations[currentLang].requestCar;
+          document.getElementById("chooseDestination").textContent =
+            translations[currentLang].chooseDestination;
+          document.getElementById("enterGoodsSize").textContent =
+            translations[currentLang].enterGoodsSize;
+        }
+
+        document
+          .getElementById("langToggle")
+          .addEventListener("click", function () {
+            currentLang = currentLang === "ar" ? "en" : "ar";
+            localStorage.setItem("lang", currentLang);
+            updateContent();
+          });
+
+        updateContent();
+      });
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
