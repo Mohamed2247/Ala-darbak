@@ -75,6 +75,10 @@ body.ar input::placeholder {
 select {
   direction: rtl;
   text-align: right;
-  appearance: none; 
-  padding-right: 20px; 
+  appearance: none;
+  padding-right: 20px;
+}
+.active {
+  color: black !important; 
+  font-size: 1.2rem; 
 }
