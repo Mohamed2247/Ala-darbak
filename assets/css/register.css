@@ -61,17 +61,6 @@ nav a:hover {
   margin: -40px auto 20px;
 }
 
-input::placeholder {
-  text-align: left;
-}
-
-body.en input::placeholder {
-  text-align: left;
-}
-
-body.ar input::placeholder {
-  text-align: right;
-}
 select {
   direction: rtl;
   text-align: right;
@@ -82,3 +71,12 @@ select {
   color: black !important; 
   font-size: 1.2rem; 
 }
+
+.rtl-placeholder::placeholder {
+  text-align: right;
+}
+
+.ltr-placeholder::placeholder {
+  text-align: left;
+}
+
