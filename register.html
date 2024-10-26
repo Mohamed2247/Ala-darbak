@@ -112,6 +112,7 @@
               class="form-control"
               id="city"
               placeholder="اختر مدينتك"
+              autocomplete="off"
               required
             />
             <datalist id="cities">
@@ -145,6 +146,7 @@
               required
               oninput="validatePhoneNumber(this)"
               value="+966"
+              dir="auto"
             />
           </div>
           <button
@@ -311,26 +313,36 @@
           translations[currentLang].fullNameLabel;
         document.getElementById("fullName").placeholder =
           translations[currentLang].fullNamePlaceholder;
+          document.getElementById("fullName").style.textAlign = currentLang === "ar" ? "right" : "left";
+
         document.getElementById("passwordLabel").textContent =
           translations[currentLang].passwordLabel;
         document.getElementById("password").placeholder =
           translations[currentLang].passwordPlaceholder;
+          document.getElementById("password").style.textAlign = currentLang === "ar" ? "right" : "left";
+
         document.getElementById("selectCity").textContent =
           translations[currentLang].locationLabel;
         document.getElementById("city").textContent =
           translations[currentLang].city;
         document.getElementById("city").placeholder =
           translations[currentLang].cityPlaceholder;
+          document.getElementById("city").style.textAlign = currentLang === "ar" ? "right" : "left";
+
         document.getElementById("phoneLabel").textContent =
           translations[currentLang].phoneLabel;
         document.getElementById("phone").placeholder =
           translations[currentLang].phonePlaceholder;
+          document.getElementById("phone").style.textAlign = currentLang === "ar" ? "right" : "left";
+
         document.getElementById("registerButton").textContent =
           translations[currentLang].registerButton;
         document.getElementById("emailLabel").textContent =
           translations[currentLang].emailLabel;
         document.getElementById("email").placeholder =
           translations[currentLang].emailPlaceholder;
+          document.getElementById("email").style.textAlign = currentLang === "ar" ? "right" : "left";
+
 
         document.getElementById("Riyadh").value =
           translations[currentLang].Riyadh;
@@ -363,6 +375,15 @@
           translations[currentLang].Khamis;
       }
 
+      const placeholders = document.querySelectorAll(
+    "#fullName, #password, #city, #phone, #email"
+  );
+  placeholders.forEach((input) => {
+    input.style.textAlign = currentLang === "ar" ? "right" : "left";
+  });
+
+  
+      
       document
         .getElementById("langToggle")
         .addEventListener("click", function () {
@@ -370,6 +391,7 @@
           localStorage.setItem("lang", currentLang);
           updateContent();
         });
+
 
       updateContent();
 
